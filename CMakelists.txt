@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.15)
+
+project(friso)
+
+set(CMAKE_CXX_STANDARD 11)
+
+file(GLOB_RECURSE friso_srcs ${CMAKE_CURRENT_SOURCE_DIR}/src/friso*.c)
+
+add_library(friso SHARED ${friso_srcs})
+
+add_executable(friso_test ${CMAKE_CURRENT_SOURCE_DIR}/src/tst-friso.c)
+
+target_link_libraries(friso_test friso)

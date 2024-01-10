@@ -73,6 +73,7 @@ int main(int argc, char **argv)
     for ( i = 0; i < argc; i++ ) {
         if ( strcasecmp( "-init", argv[i] ) == 0 ) {
             __path__ = argv[i+1];
+            printf("lexicon path: %s\n", __path__);
         }
     }
 

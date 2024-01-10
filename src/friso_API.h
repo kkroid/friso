@@ -22,11 +22,19 @@
 #endif
 
 #ifdef FRISO_WINNT
+#ifdef __cplusplus
+#    define FRISO_API extern "C" __declspec(dllexport)
+#else
 #    define FRISO_API extern __declspec(dllexport)
+#endif
 #    define __STATIC_API__ static
 #else
 /*platform shared library statement :: unix*/
+#ifdef __cplusplus
+#    define FRISO_API extern "C"
+#else
 #    define FRISO_API extern
+#endif
 #    define __STATIC_API__ static inline
 #endif
 
