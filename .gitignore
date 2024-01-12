@@ -14,6 +14,7 @@ CHANGES.txt
 .libs/
 .idea/
 build/
+.vscode/
 
 # About the autotools
 m4/
