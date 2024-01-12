@@ -7,7 +7,7 @@ public:
     FrisoTest();
     ~FrisoTest();
     void init(std::string config);
-    void test();
+    void test(char *text);
 
 private:
     friso_t friso;
