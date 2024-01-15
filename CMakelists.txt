@@ -11,8 +11,9 @@ add_library(friso SHARED ${friso_srcs})
 # add_executable(friso_test ${CMAKE_CURRENT_SOURCE_DIR}/src/tst-friso.c)
 add_executable(friso_cpp ${CMAKE_CURRENT_SOURCE_DIR}/src/FrisoTest.cpp
                         ${CMAKE_CURRENT_SOURCE_DIR}/src/FrisoTest.h
-                        ${CMAKE_CURRENT_SOURCE_DIR}/src/EncodingConversion.cpp
-                        ${CMAKE_CURRENT_SOURCE_DIR}/src/EncodingConversion.h)
+                        ${CMAKE_CURRENT_SOURCE_DIR}/src/FrisoCppWrapper.h
+                        ${CMAKE_CURRENT_SOURCE_DIR}/src/FrisoCppWrapper.cpp
+                        )
 
 # target_link_libraries(friso_test friso)
 target_link_libraries(friso_cpp friso)
