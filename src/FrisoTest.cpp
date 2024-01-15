@@ -51,46 +51,52 @@ char* WstringToGbk(const std::wstring& wstr)
 #include <string>
 
 std::string detectEncoding(const std::string& str) {
-    if (str.empty()) {
-        return "Unknown";
-    }
-
-    if (static_cast<unsigned char>(str[0]) >= 0x80) {
-        return "UTF-8";
-    }
-
-    bool isGBK = true;
-    bool isUTF8 = false;
-
-    for (size_t i = 0; i < str.length(); ++i) {
-        if (static_cast<unsigned char>(str[i]) >= 0x80) {
-            isGBK = false;
-
-            if (str[i] >= 0xC0 && str[i] <= 0xDF) {
-                isUTF8 = true;
-            } else if (str[i] >= 0xE0 && str[i] <= 0xEF) {
-                if (i + 1 < str.length() && (str[i + 1] & 0xC0) == 0x80) {
-                    isUTF8 = true;
-                }
-            } else if (str[i] >= 0xF0 && str[i] <= 0xF7) {
-                if (i + 2 < str.length() && (str[i + 1] & 0xC0) == 0x80 && (str[i + 2] & 0xC0) == 0x80) {
-                    isUTF8 = true;
-                }
-            }
-
-            if (isUTF8) {
-                break;
-            }
+    // 检测是否为合法的ASCII字符
+    bool isAscii = true;
+    for (char ch : str) {
+        if (((unsigned char)ch) > 127) {
+            isAscii = false;
+            break;
         }
     }
 
-    if (isUTF8) {
-        return "UTF-8";
-    } else if (isGBK) {
-        return "GBK";
-    } else {
-        return "Unknown";
+    if (isAscii) {
+        return "ASCII";
     }
+
+    // 检测是否为UTF-8编码
+    bool isUtf8 = true;
+    int numBytes = 0;
+
+    for (char ch : str) {
+        if (numBytes == 0) {
+            if ((ch & 0b10000000) == 0) {
+                continue;
+            } else if ((ch & 0b11100000) == 0b11000000) {
+                numBytes = 1;
+            } else if ((ch & 0b11110000) == 0b11100000) {
+                numBytes = 2;
+            } else if ((ch & 0b11111000) == 0b11110000) {
+                numBytes = 3;
+            } else {
+                isUtf8 = false;
+                break;
+            }
+        } else {
+            if ((ch & 0b11000000) != 0b10000000) {
+                isUtf8 = false;
+                break;
+            }
+            numBytes--;
+        }
+    }
+
+    if (isUtf8) {
+        return "UTF-8";
+    }
+
+    // 默认认为是GBK编码
+    return "GBK";
 }
 
 int main(int argc, char const *argv[] ) {
