@@ -101,13 +101,14 @@ std::string detectEncoding(const std::string& str) {
 
 int main(int argc, char const *argv[] ) {
     setlocale(LC_ALL, "en_US.UTF-8");
-    FrisoCppWrapper::GetInstance().Init("/Users/willzhang/github/friso/vendors/dict/");
+    FrisoCppWrapper::GetInstance().Init("E:/github/friso/vendors/dict/");
     std::string text = std::string(argv[1] == nullptr ? "你真是个不错的小伙子" : argv[1]);
     std::string encoding = detectEncoding(text);
     printf("文本编码:%s\n", encoding.c_str());
     if (encoding != "UTF-8")
     {
-    // const char *argv1_gbk = WstringToUtf8(GbkToWstring(argv[1]));
+        text = std::string(WstringToUtf8(GbkToWstring(text.c_str())));
+        printf("转编码后的文本:%s\n", text.c_str());
     // const char *argv1_gbk = EncodingConversion::GBKToUTF8(argv[1]).c_str();
     }
     std::vector<std::string> Results = FrisoCppWrapper::GetInstance().RunTask(text);
